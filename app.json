@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Gaz Takip",
+    "slug": "gaz",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "android": {
+      "package": "com.gaztakip.app",
+      "permissions": [
+        "VIBRATE",
+        "RECEIVE_BOOT_COMPLETED"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2f5126ce-c870-4dfe-b4cd-ea3094e821ae"
+      }
+    },
+    "owner": "alneyup"
+  }
+}
