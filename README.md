@@ -109,6 +109,4 @@ python main.py
 
 ---
 
-## Lisans
 
-MIT
