@@ -1,38 +1,83 @@
-##Gaz Metre App##
-Bu proje; MQ-2 ve MQ-135 sensörleri kullanılarak geliştirilmiş, Python tabanlı bir gaz ölçüm ve takip sistemidir. Donanımdan alınan veriler Firebase veritabanına aktarılırken, kullanıcıya Telegram botu ve özel bir uygulama üzerinden anlık bilgi sunulmaktadır.
+# 🔥 Gaz Metre
 
-🛠 Özellikler
-Sensör Okuma: MQ-2 ve MQ-135 sensörlerinden hassas veri alımı.
+MQ-2 ve MQ-135 sensörleriyle gerçek zamanlı gaz izleme sistemi. Veriler Firebase'e aktarılır, Telegram botu üzerinden anlık uyarı gönderilir.
 
-Firebase Entegrasyonu: Verilerin Python aracılığıyla Firebase Realtime Database'e anlık aktarımı.
+---
 
-Telegram Botu: Kritik eşikler ve durum güncellemeleri için anlık bildirim sistemi.
+## Nasıl Çalışır
 
-Uygulama Desteği: Verilerin izlenebileceği harici uygulama entegrasyonu.
+```
+Arduino (MQ-2 / MQ-135)
+        │
+        ▼ Serial Port
+   Python Script
+        │
+   ┌────┴────┐
+   ▼         ▼
+Firebase   Telegram Bot
+```
 
-💻 Kullanılan Teknolojiler
-Dil: Python
+Sensörlerden okunan değerler seri port üzerinden Python'a gelir. Python bu verileri hem Firebase Realtime Database'e yazar hem de eşik değerleri aşıldığında Telegram botu aracılığıyla bildirim gönderir. Veriler aynı zamanda harici bir uygulama üzerinden izlenebilir.
 
-Veritabanı: Firebase
+---
 
-Haberleşme: Telegram Bot API & Serial Port
+## Özellikler
 
-Donanım: Arduino / MQ Sensör Serisi
+- **Sensör okuma** — MQ-2 (yanıcı gazlar / duman) ve MQ-135 (hava kalitesi)
+- **Firebase entegrasyonu** — Verilerin anlık olarak Realtime Database'e yazılması
+- **Telegram bildirimleri** — Kritik eşik aşımlarında otomatik uyarı
+- **Uygulama desteği** — Harici arayüz üzerinden geçmiş ve anlık veri takibi
 
-🚀 Kurulum
-Gerekli kütüphaneleri yükleyin:
+---
 
-Bash
+## Kullanılan Teknolojiler
+
+| Katman | Teknoloji |
+|--------|-----------|
+| Donanım | Arduino, MQ-2, MQ-135 |
+| Backend | Python 3 |
+| Veritabanı | Firebase Realtime Database |
+| Bildirim | Telegram Bot API |
+| İletişim | Serial Port (`pyserial`) |
+
+---
+
+## Kurulum
+
+**1. Bağımlılıkları yükleyin:**
+
+```bash
 pip install firebase-admin python-telegram-bot pyserial
-Python dosyasındaki Firebase ve Telegram API bilgilerini kendi anahtarlarınızla güncelleyin.
+```
 
-Uygulamayı çalıştırın.
+**2. Yapılandırmayı güncelleyin:**
 
-🌐 English Description
-This project is a gas monitoring system using MQ-2 and MQ-135 sensors. Data is collected via Python, synced with Firebase, and can be monitored through a dedicated app and a Telegram bot.
+`config.py` (veya ilgili dosya) içindeki şu değerleri kendi anahtarlarınızla değiştirin:
 
-Real-time Data: Instant sensor readings synced to Firebase.
+```python
+FIREBASE_CREDENTIALS = "serviceAccountKey.json"
+TELEGRAM_BOT_TOKEN   = "your-bot-token"
+TELEGRAM_CHAT_ID     = "your-chat-id"
+SERIAL_PORT          = "COM3"  # ya da "/dev/ttyUSB0"
+```
 
-Telegram Alerts: Automated notifications via Telegram bot.
+**3. Çalıştırın:**
 
-Dedicated App: Custom interface for tracking gas levels.
+```bash
+python main.py
+```
+
+---
+
+## Donanım Bağlantısı
+
+| Sensör | Ölçülen Değer |
+|--------|---------------|
+| MQ-2   | Yanıcı gazlar (LPG, metan, hidrojen), duman |
+| MQ-135 | Hava kalitesi (CO₂, amonyak, benzen) |
+
+---
+
+## Lisans
+
+MIT
