@@ -156,10 +156,10 @@ export default function App() {
 
 
   useEffect(() => {
-    obX.setValue(40); obOp.setValue(0);
+    obX.setValue(30); obOp.setValue(0);
     Animated.parallel([
-      Animated.timing(obX, { toValue: 0, duration: 360, useNativeDriver: true }),
-      Animated.timing(obOp, { toValue: 1, duration: 360, useNativeDriver: true }),
+      Animated.timing(obX, { toValue: 0, duration: 500, useNativeDriver: true }),
+      Animated.timing(obOp, { toValue: 1, duration: 500, useNativeDriver: true }),
     ]).start();
   }, [obStep]);
 
@@ -173,45 +173,49 @@ export default function App() {
     const step = ONBOARDING[obStep];
     const isLast = obStep === ONBOARDING.length - 1;
     const next = () => isLast ? done() : setObStep(p => p + 1);
+    
     return (
-      <Animated.View style={[s.root, { opacity: obOp, transform: [{ translateX: obX }] }]}>
+      <View style={s.root}>
         <StatusBar barStyle="dark-content" backgroundColor={C.bg} />
-        {obStep === 0 ? (
-          <ImageBackground source={require("./home.jpg")} style={{ flex: 1 }} resizeMode="cover">
-            <LinearGradient colors={["rgba(0, 0, 0, 0.01)", "rgba(0, 0, 0, 1)"]} style={s.obOverlay}>
-              <Text style={[s.obTitle, { color: "#fff" }]}>{step.title}</Text>
-              <Text style={[s.obSub, { color: "#fff" }]}>{step.subtitle}</Text>
-              <View style={s.obDots}>
-                {ONBOARDING.map((o, i) => <View key={o.key} style={[s.obDot, i === obStep && s.obDotActive]} />)}
-              </View>
-              <TouchableOpacity style={s.obBtn} onPress={next}>
-                <LinearGradient colors={[C.accent, "#047857"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.obBtnGrad}>
-                  <Text style={s.obBtnText}>{isLast ? "Başlayalım" : "İleri"}</Text>
-                  <Feather name="arrow-right" size={18} color="#fff" style={{ marginLeft: 8 }} />
-                </LinearGradient>
-              </TouchableOpacity>
-            </LinearGradient>
-          </ImageBackground>
-        ) : (
-          <LinearGradient colors={["rgba(0, 0, 0, 0.01)", "rgba(0, 0, 0, 0.8)"]} style={s.obSolid}>
-            <View style={s.obIllustration}>
-              {obStep === 1 ? <QualityTime width={260} height={260} /> : <AnalysisSvg width={260} height={260} />}
-            </View>
-
-            <Text style={[s.obTitle, { color: "#fff" }]}>{step.title}</Text>
-            <Text style={[s.obSub, { color: "#fff" }]}>{step.subtitle}</Text>
-            <View style={s.obDots}>
-              {ONBOARDING.map((o, i) => <View key={o.key} style={[s.obDot, i === obStep && s.obDotActive]} />)}
-            </View>
-            <TouchableOpacity style={s.obBtn} onPress={next}>
-              <LinearGradient colors={[C.accent, "#047857"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.obBtnGrad}>
-                <Text style={s.obBtnText}>{isLast ? "Başlayalım" : "İleri"}</Text>
-                <Feather name="arrow-right" size={18} color="#fff" style={{ marginLeft: 8 }} />
-              </LinearGradient>
-            </TouchableOpacity>
-          </LinearGradient>
+        
+        {/* Sadece Resimler/Görseller Animasyonlu */}
+        {obStep === 0 && (
+          <Animated.View style={[StyleSheet.absoluteFill, { opacity: obOp, transform: [{ translateX: obX }] }]}>
+            <ImageBackground source={require("./home.jpg")} style={{ flex: 1 }} resizeMode="cover" />
+          </Animated.View>
         )}
-      </Animated.View>
+        
+        {obStep > 0 && (
+          <View style={[StyleSheet.absoluteFill, { backgroundColor: "#009760" }]} />
+        )}
+
+        <LinearGradient 
+          colors={obStep === 0 ? ["rgba(0, 0, 0, 0.01)", "rgba(0, 0, 0, 1)"] : ["rgba(0, 0, 0, 0.01)", "rgba(0, 0, 0, 0.8)"]} 
+          style={StyleSheet.absoluteFill} 
+          pointerEvents="none" 
+        />
+
+        {/* Yazılar ve Kontroller Sabit */}
+        <View style={s.obOverlay}>
+          {obStep > 0 && (
+            <Animated.View style={[s.obIllustration, { opacity: obOp, transform: [{ translateX: obX }] }]}>
+              {obStep === 1 ? <QualityTime width={260} height={260} /> : <AnalysisSvg width={260} height={260} />}
+            </Animated.View>
+          )}
+
+          <Text style={[s.obTitle, { color: "#fff" }]}>{step.title}</Text>
+          <Text style={[s.obSub, { color: "#fff" }]}>{step.subtitle}</Text>
+          <View style={s.obDots}>
+            {ONBOARDING.map((o, i) => <View key={o.key} style={[s.obDot, i === obStep && s.obDotActive]} />)}
+          </View>
+          <TouchableOpacity style={s.obBtn} onPress={next}>
+            <LinearGradient colors={[C.accent, "#047857"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.obBtnGrad}>
+              <Text style={s.obBtnText}>{isLast ? "Başlayalım" : "İleri"}</Text>
+              <Feather name="arrow-right" size={18} color="#fff" style={{ marginLeft: 8 }} />
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 
