@@ -1,3 +1,4 @@
+![Uygulama Ekranı](assets/icon.png)
 # 🔥 Gaz Metre
 
 MQ-2 ve MQ-135 sensörleriyle gerçek zamanlı gaz izleme sistemi. Veriler Firebase'e aktarılır, Telegram botu üzerinden anlık uyarı gönderilir.
@@ -15,9 +16,12 @@ Arduino (MQ-2 / MQ-135)
    ┌────┴────┐
    ▼         ▼
 Firebase   Telegram Bot
+   │
+   ▼
+Mobil Uygulama (React Native)
 ```
 
-Sensörlerden okunan değerler seri port üzerinden Python'a gelir. Python bu verileri hem Firebase Realtime Database'e yazar hem de eşik değerleri aşıldığında Telegram botu aracılığıyla bildirim gönderir. Veriler aynı zamanda harici bir uygulama üzerinden izlenebilir.
+Sensörlerden okunan değerler seri port üzerinden Python'a gelir. Python bu verileri Firebase Realtime Database'e yazar ve kritik eşikler aşıldığında Telegram botu aracılığıyla bildirim gönderir. Firebase'e yazılan veriler, React Native ile geliştirilen mobil uygulama üzerinden anlık olarak izlenebilir.
 
 ---
 
@@ -26,7 +30,33 @@ Sensörlerden okunan değerler seri port üzerinden Python'a gelir. Python bu ve
 - **Sensör okuma** — MQ-2 (yanıcı gazlar / duman) ve MQ-135 (hava kalitesi)
 - **Firebase entegrasyonu** — Verilerin anlık olarak Realtime Database'e yazılması
 - **Telegram bildirimleri** — Kritik eşik aşımlarında otomatik uyarı
-- **Uygulama desteği** — Harici arayüz üzerinden geçmiş ve anlık veri takibi
+- **Mobil uygulama** — Firebase'e bağlı React Native arayüzü ile anlık ve geçmiş veri görüntüleme
+
+---
+
+## Mobil Uygulama
+
+Sensör verileri Firebase üzerinden React Native (Expo) ile geliştirilen mobil uygulamaya akar. Uygulama Firebase Realtime Database'e doğrudan bağlanarak verileri ekrana yansıtır.
+
+📱 Uygulama reposu: [Eyupaln/Gaz-Metre-app](https://github.com/Eyupaln/Gaz-Metre-app)
+
+**Uygulama kurulumu:**
+
+```bash
+npm install
+npx expo start
+```
+
+`firebaseConfig.js` dosyasını kendi Firebase proje bilgilerinizle güncelleyin:
+
+```js
+const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "...",
+  databaseURL: "...",
+  projectId: "...",
+};
+```
 
 ---
 
@@ -39,6 +69,7 @@ Sensörlerden okunan değerler seri port üzerinden Python'a gelir. Python bu ve
 | Veritabanı | Firebase Realtime Database |
 | Bildirim | Telegram Bot API |
 | İletişim | Serial Port (`pyserial`) |
+| Mobil Uygulama | React Native (Expo) |
 
 ---
 
