@@ -1,4 +1,4 @@
-Gaz Metre App
+##Gaz Metre App##
 Bu proje; MQ-2 ve MQ-135 sensörleri kullanılarak geliştirilmiş, Python tabanlı bir gaz ölçüm ve takip sistemidir. Donanımdan alınan veriler Firebase veritabanına aktarılırken, kullanıcıya Telegram botu ve özel bir uygulama üzerinden anlık bilgi sunulmaktadır.
 
 🛠 Özellikler
